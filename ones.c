@@ -11,6 +11,7 @@ static int one_open(struct inode *, struct file *);
 static int one_close(struct inode *, struct file *);
 static ssize_t one_read(struct file *, char *, size_t, loff_t *);
 
+
 // structure containing the callbacks
 static struct file_operations fops = {
     .owner = THIS_MODULE,       // pointer to the module struct
@@ -18,6 +19,7 @@ static struct file_operations fops = {
     .release = one_close,       // address of one_close
     .read = one_read,           // address of one_read
 };
+
 
 // logging
 #define debug(fmt, arg...)                                          \
@@ -30,28 +32,28 @@ static struct file_operations fops = {
     printk(KERN_INFO "[ ONE : %-20.20s: %-3.3d ] [INF] " fmt "\n",  \
         __FUNCTION__, __LINE__, ##arg)
 
+
 // called when the module is loaded (through insmod or during boot process)
-// very similar to main()
+// very similar to main() (or a constructor in OOP)
 static int __init
 one_init(void)
 {
     debug("registering the character device");
+
     major = register_chrdev(0, "one", &fops);
-    debug("return value: %d", major);
     if (major < 0) {
-        error("Device registration failed!!");
+        error("Device registration failed - %d!!", major);
         return -EFAULT;
     }
-
     info("Device registration successful. Major #%d", major);
+
     debug("about to prepare the array");
-    //memset(one_arr, 255, PAGE_SIZE);
-    memset(one_arr, 0xFFFFFFFF, PAGE_SIZE);
+    memset(one_arr, 0xFF, PAGE_SIZE);
 
     return 0;
 }
 
-// called when module is unloaded, similar to destruction in OOp
+// called when module is unloaded, similar to destructor in OOP
 static void __exit
 one_exit(void)
 {
@@ -108,7 +110,7 @@ one_read(struct file *fp, char *buf, size_t buf_size, loff_t *off)
             chunk = PAGE_SIZE;
 
         debug("about to copy #%ld size of data", chunk);
-        debug("data: 0x%x", (int)one_arr[0]);
+        debug("data: 0x%x", (unsigned char)one_arr[0]);
         if (copy_to_user(buf, one_arr, chunk))
             return -EFAULT;
 

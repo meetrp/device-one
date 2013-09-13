@@ -25,7 +25,7 @@ main()
         printf("error %s\n", strerror(errno));
     } else 
         // just for test, printing that one byte.
-        printf("0x%x\n", (int)(buf[0]));
+        printf("0x%x\n", (unsigned char)(buf[0]));
 
     close(fp);
 }

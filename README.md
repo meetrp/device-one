@@ -27,4 +27,4 @@ Testing
 The sample test code is included & compiled during make
 
     $> ./test
-    0xffffffff
+    0xff

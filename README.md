@@ -28,3 +28,21 @@ The sample test code is included & compiled during make
 
     $> ./test
     0xff
+
+
+Verification
+============
+
+Use 'dd' and 'od' to read & dump to verify the data.
+
+    # read 1 Byte of data from /dev/ones & store it in file 'out'
+    $> dd if=/dev/ones of=out bs=1 count=1
+    1+0 records in
+    1+0 records out
+    1 byte (1 B) copied, 0.000142743 s, 7.0 kB/s
+
+    # dump the content of 'out' file in hex mode
+    $> od -t x1 out
+    0000000 ff
+    0000001
+

@@ -46,3 +46,9 @@ Use 'dd' and 'od' to read & dump to verify the data.
     0000000 ff
     0000001
 
+
+
+Blog Article about this code
+============================
+
+http://tech.meetrp.com/blog/simple-character-device-driver/
